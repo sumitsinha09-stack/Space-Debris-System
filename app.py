@@ -260,5 +260,5 @@ def index():
 
 if __name__ == "__main__":
     print("🚀 Starting SDCPS Dashboard...")
-    print("   Open: http://localhost:5000\n")
+    print("   Open: http://localhost:7860\n")
     app.run(host="0.0.0.0", port=7860, debug=False)
