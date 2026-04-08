@@ -45,8 +45,22 @@ try:
 except FileNotFoundError:
     model_binary = None
     print("No pkl file found — using fallback ML logic")
-with open("model_risk.pkl",    "rb") as f: model_risk    = pickle.load(f)
-with open("label_encoder.pkl", "rb") as f: le            = pickle.load(f)
+try:
+    with open("model_risk.pkl", "rb") as f:
+        model_risk = pickle.load(f)
+    print("model_risk loaded")
+except FileNotFoundError:
+    model_risk = None
+    print("model_risk.pkl not found — using fallback")
+
+try:
+    with open("label_encoder.pkl", "rb") as f:
+        le = pickle.load(f)
+    print("label_encoder loaded")
+except FileNotFoundError:
+    le = None
+    print("label_encoder.pkl not found — using fallback")
+
 print("✅ Models ready\n")
 
 FEATURES = [
