@@ -1,19 +1,29 @@
+from flask import Flask, jsonify
 from env import SpaceEnv
 from tasks import task_easy, task_medium, task_hard
 
-def run():
-    env = SpaceEnv()
+app = Flask(__name__)
+env = SpaceEnv()
 
-    print("Running baseline inference...\n")
+@app.post("/reset")
+def reset():
+    env.reset()
+    return jsonify({"status": "ok"})
 
+@app.post("/step")
+def step():
     scores = []
     scores.append(task_easy(env))
     scores.append(task_medium(env))
     scores.append(task_hard(env))
+    return jsonify({
+        "scores": scores,
+        "average": sum(scores) / len(scores)
+    })
 
-    print("Task Scores:", scores)
-    print("Average Score:", sum(scores) / len(scores))
-
+@app.get("/health")
+def health():
+    return jsonify({"status": "healthy"})
 
 if __name__ == "__main__":
-    run()
+    app.run(host="0.0.0.0", port=5000)
