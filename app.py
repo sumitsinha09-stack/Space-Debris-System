@@ -70,10 +70,33 @@ FEATURES = [
     "combined_cov_trace", "mahalanobis_distance", "both_debris", "one_debris"
 ]
 
+def fetch_live_tle(url):
+    try:
+        import requests
+        response = requests.get(url, timeout=10)
+        lines = response.text.strip().splitlines()
+        objects = []
+        for i in range(0, len(lines) - 2, 3):
+            name = lines[i].strip()
+            l1   = lines[i+1].strip()
+            l2   = lines[i+2].strip()
+            if l1.startswith("1") and l2.startswith("2"):
+                objects.append((name, l1, l2))
+        return objects
+    except Exception as e:
+        print(f"Live TLE fetch failed: {e}")
+        return []
+
 def load_objects():
     objs = []
-    objs += parse_tle_file("stations.tle")
-    objs += parse_tle_file("debris.tle")
+    # Try live data first
+    objs += fetch_live_tle("https://celestrak.org/pub/TLE/stations.txt")
+    objs += fetch_live_tle("https://celestrak.org/pub/TLE/debris.txt")
+    # Fallback to local files if live fetch failed
+    if not objs:
+        print("Falling back to local TLE files")
+        objs += parse_tle_file("stations.tle")
+        objs += parse_tle_file("debris.tle")
     return objs
 
 # ── API: Current positions ────────────────────────────────
