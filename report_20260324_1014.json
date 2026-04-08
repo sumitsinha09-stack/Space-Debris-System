@@ -1,0 +1,107 @@
+{
+  "generated_at": "2026-03-24 04:44 UTC",
+  "total_conjunctions": 14,
+  "critical": 0,
+  "warning": 1,
+  "monitor": 13,
+  "events": [
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "THOR ABLESTAR DEB",
+      "object2": "THOR ABLESTAR DEB",
+      "distance": 44.44,
+      "time": "2026-03-24 05:14 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "DISCOVERER 32 DEB",
+      "object2": "THOR AGENA B DEB",
+      "distance": 28.23,
+      "time": "2026-03-24 05:44 UTC"
+    },
+    {
+      "level": "\ud83d\udfe1 WARNING",
+      "object1": "DISCOVERER 23",
+      "object2": "SL-8 DEB",
+      "distance": 7.09,
+      "time": "2026-03-24 07:14 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SPUTNIK 22 DEB",
+      "object2": "SL-8 DEB",
+      "distance": 47.43,
+      "time": "2026-03-24 07:14 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "THOR AGENA B DEB",
+      "object2": "TITAN 3C TRANSTAGE DEB",
+      "distance": 31.13,
+      "time": "2026-03-24 09:44 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "FTV 2312 DEB",
+      "object2": "SL-8 DEB",
+      "distance": 21.82,
+      "time": "2026-03-24 12:44 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SPUTNIK 9",
+      "object2": "SPUTNIK 22 DEB",
+      "distance": 42.55,
+      "time": "2026-03-24 15:44 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SL-8 DEB",
+      "object2": "TITAN 3C TRANSTAGE DEB",
+      "distance": 45.72,
+      "time": "2026-03-24 16:44 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "THOR ABLESTAR DEB",
+      "object2": "THOR ABLESTAR DEB",
+      "distance": 17.07,
+      "time": "2026-03-24 18:14 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "THOR ABLESTAR DEB",
+      "object2": "SL-8 DEB",
+      "distance": 47.32,
+      "time": "2026-03-24 18:44 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SPUTNIK 20",
+      "object2": "COSMOS 57 DEB",
+      "distance": 34.62,
+      "time": "2026-03-25 00:44 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "RANGER 1",
+      "object2": "THOR ABLESTAR DEB",
+      "distance": 45.94,
+      "time": "2026-03-25 01:14 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "THOR ABLESTAR DEB",
+      "object2": "THOR ABLESTAR DEB",
+      "distance": 37.98,
+      "time": "2026-03-25 01:44 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "DISCOVERER 30",
+      "object2": "SL-6 DEB",
+      "distance": 41.78,
+      "time": "2026-03-25 03:44 UTC"
+    }
+  ]
+}

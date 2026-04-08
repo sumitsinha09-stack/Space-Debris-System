@@ -1,0 +1,114 @@
+{
+  "generated_at": "2026-03-24 04:40 UTC",
+  "total_conjunctions": 15,
+  "critical": 0,
+  "warning": 0,
+  "monitor": 15,
+  "events": [
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "DISCOVERER 32 DEB",
+      "object2": "THOR AGENA B DEB",
+      "distance": 33.6,
+      "time": "2026-03-24 05:40 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "DISCOVERER 18",
+      "object2": "SPUTNIK 22 DEB",
+      "distance": 35.94,
+      "time": "2026-03-24 08:10 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "OPS 3062 DEB",
+      "object2": "SL-8 DEB",
+      "distance": 26.78,
+      "time": "2026-03-24 11:40 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "THOR ABLESTAR DEB",
+      "object2": "SL-8 DEB",
+      "distance": 30.29,
+      "time": "2026-03-24 12:40 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SL-3 DEB",
+      "object2": "COSMOS 57 DEB",
+      "distance": 30.97,
+      "time": "2026-03-24 13:40 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SL-6 PLAT",
+      "object2": "SL-8 DEB",
+      "distance": 35.41,
+      "time": "2026-03-24 15:10 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SL-7 DEB",
+      "object2": "COSMOS 57 DEB",
+      "distance": 37.47,
+      "time": "2026-03-24 17:10 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "THOR ABLESTAR DEB",
+      "object2": "THOR ABLESTAR DEB",
+      "distance": 35.84,
+      "time": "2026-03-24 18:10 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "COSMOS 57 DEB",
+      "object2": "TITAN 3C TRANSTAGE DEB",
+      "distance": 12.54,
+      "time": "2026-03-24 22:40 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "DISCOVERER 25 DEB",
+      "object2": "SL-8 DEB",
+      "distance": 32.7,
+      "time": "2026-03-25 00:40 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SL-3 DEB",
+      "object2": "SL-8 DEB",
+      "distance": 39.87,
+      "time": "2026-03-25 01:10 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "TITAN 3C TRANSTAGE DEB",
+      "object2": "TITAN 3C TRANSTAGE DEB",
+      "distance": 43.72,
+      "time": "2026-03-25 01:10 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "THOR ABLESTAR DEB",
+      "object2": "THOR ABLESTAR DEB",
+      "distance": 43.2,
+      "time": "2026-03-25 01:40 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "THOR ABLESTAR DEB",
+      "object2": "TITAN 3C TRANSTAGE DEB",
+      "distance": 24.9,
+      "time": "2026-03-25 03:10 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SL-6 PLAT",
+      "object2": "SL-8 DEB",
+      "distance": 48.31,
+      "time": "2026-03-25 04:10 UTC"
+    }
+  ]
+}

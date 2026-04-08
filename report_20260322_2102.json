@@ -1,0 +1,86 @@
+{
+  "generated_at": "2026-03-22 15:32 UTC",
+  "total_conjunctions": 11,
+  "critical": 0,
+  "warning": 0,
+  "monitor": 11,
+  "events": [
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "DISCOVERER 32 DEB",
+      "object2": "DISCOVERER 38 DEB",
+      "distance": 37.4,
+      "time": "2026-03-22 19:32 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SAMOS 9 (FTV 2403)",
+      "object2": "FTV 1157 DEB",
+      "distance": 44.48,
+      "time": "2026-03-22 20:32 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "DISCOVERER 25",
+      "object2": "COSMOS 57 DEB",
+      "distance": 41.04,
+      "time": "2026-03-22 22:02 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SCOUT X-3 DEB",
+      "object2": "SL-3 DEB",
+      "distance": 41.66,
+      "time": "2026-03-22 23:32 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "FTV 1131",
+      "object2": "SL-6 DEB",
+      "distance": 30.83,
+      "time": "2026-03-23 04:02 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "THOR ABLESTAR DEB",
+      "object2": "THOR ALTAIR DEB",
+      "distance": 29.91,
+      "time": "2026-03-23 05:02 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "OSCAR 1",
+      "object2": "SL-6 DEB",
+      "distance": 48.73,
+      "time": "2026-03-23 06:32 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SL-6 DEB",
+      "object2": "SPUTNIK 22 DEB",
+      "distance": 49.15,
+      "time": "2026-03-23 09:02 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "COSMOS 6 (SPUTNIK 16)",
+      "object2": "SL-6 DEB",
+      "distance": 41.9,
+      "time": "2026-03-23 13:02 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SPUTNIK 7",
+      "object2": "SPUTNIK 22 DEB",
+      "distance": 45.0,
+      "time": "2026-03-23 13:32 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SPUTNIK 7",
+      "object2": "SPUTNIK 22 DEB",
+      "distance": 32.84,
+      "time": "2026-03-23 15:02 UTC"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-03-22 15:27 UTC",
+  "total_conjunctions": 10,
+  "critical": 0,
+  "warning": 0,
+  "monitor": 10,
+  "events": [
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "COSMOS 57 DEB",
+      "object2": "SL-6 PLAT",
+      "distance": 47.91,
+      "time": "2026-03-22 15:27 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "FTV 2312",
+      "object2": "SL-6 DEB",
+      "distance": 42.15,
+      "time": "2026-03-22 16:27 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "DISCOVERER 32 DEB",
+      "object2": "DISCOVERER 38 DEB",
+      "distance": 22.26,
+      "time": "2026-03-22 19:27 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SAMOS 10 (FTV 2404)",
+      "object2": "SPUTNIK 22",
+      "distance": 40.07,
+      "time": "2026-03-22 20:27 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "FTV 1128",
+      "object2": "FTV 1152",
+      "distance": 46.69,
+      "time": "2026-03-22 21:27 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "DISCOVERER 32",
+      "object2": "SPUTNIK 22 DEB",
+      "distance": 39.55,
+      "time": "2026-03-23 05:27 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SL-8 DEB",
+      "object2": "SL-8 DEB",
+      "distance": 46.42,
+      "time": "2026-03-23 09:57 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "DISCOVERER 18",
+      "object2": "SAMOS 2",
+      "distance": 42.04,
+      "time": "2026-03-23 11:57 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "SL-3 DEB",
+      "object2": "SL-8 DEB",
+      "distance": 48.99,
+      "time": "2026-03-23 12:57 UTC"
+    },
+    {
+      "level": "\ud83d\udd35 MONITOR",
+      "object1": "INJUN 3",
+      "object2": "FTV 1157",
+      "distance": 29.93,
+      "time": "2026-03-23 14:57 UTC"
+    }
+  ]
+}

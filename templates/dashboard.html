@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDCPS — Live Mission Control</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#020b18; --surface:#040f1f; --border:#0e2a4a;
+  --accent:#00d4ff; --warn:#ff7b00; --danger:#ff2255;
+  --safe:#00ff88; --text:#c8dff5; --muted:#4a6a8a;
+  --grid:rgba(0,212,255,0.04);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+#app{display:grid;grid-template-columns:260px 1fr 280px;grid-template-rows:52px 1fr 140px;height:100vh;position:relative;z-index:1;}
+
+/* HEADER */
+header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--border);background:rgba(4,15,31,0.95);backdrop-filter:blur(10px);}
+.logo{font-family:'Orbitron',monospace;font-size:13px;font-weight:900;letter-spacing:3px;color:var(--accent);display:flex;align-items:center;gap:10px;}
+.logo-ring{width:26px;height:26px;border:2px solid var(--accent);border-radius:50%;position:relative;animation:spin 8s linear infinite;}
+.logo-ring::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;background:var(--accent);border-radius:50%;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.hstats{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);display:flex;gap:20px;}
+.hstat{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.hstat-val{font-size:13px;font-weight:700;}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--safe);margin-right:6px;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.2;}}
+.clock{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--accent);}
+
+/* PANELS */
+.left-panel,.right-panel{background:rgba(4,15,31,0.8);display:flex;flex-direction:column;overflow:hidden;}
+.left-panel{border-right:1px solid var(--border);}
+.right-panel{border-left:1px solid var(--border);}
+.ph{padding:10px 14px;border-bottom:1px solid var(--border);font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);display:flex;align-items:center;gap:6px;}
+.ph::before{content:'';display:block;width:3px;height:10px;background:var(--accent);border-radius:2px;}
+.scrollbox{flex:1;overflow-y:auto;padding:6px;}
+.scrollbox::-webkit-scrollbar{width:3px;}
+.scrollbox::-webkit-scrollbar-thumb{background:var(--border);}
+
+/* Object list */
+.obj-item{padding:8px 10px;border:1px solid var(--border);border-radius:5px;margin-bottom:5px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.obj-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--safe);}
+.obj-item.deb::before{background:var(--warn);}
+.obj-item:hover{border-color:var(--accent);background:rgba(0,212,255,0.05);}
+.obj-name{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;color:#fff;margin-bottom:3px;}
+.obj-meta{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--muted);}
+.obj-alt{color:var(--accent);}
+
+/* CENTER */
+.center-panel{position:relative;background:radial-gradient(ellipse at center,#020d1f 0%,var(--bg) 70%);}
+#globe{width:100%;height:100%;display:block;}
+.legend{position:absolute;top:14px;left:14px;background:rgba(4,15,31,0.85);border:1px solid var(--border);border-radius:5px;padding:8px 12px;font-family:'Share Tech Mono',monospace;font-size:8px;backdrop-filter:blur(8px);}
+.li{display:flex;align-items:center;gap:6px;margin-bottom:4px;color:var(--muted);}
+.li:last-child{margin-bottom:0;}
+.ld{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.refresh-badge{position:absolute;top:14px;right:14px;background:rgba(4,15,31,0.85);border:1px solid var(--border);border-radius:5px;padding:6px 12px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted);}
+.refresh-badge span{color:var(--accent);}
+
+/* Alerts */
+.alert-card{padding:9px 11px;margin-bottom:5px;border-radius:5px;border:1px solid;animation:slideIn 0.3s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateX(15px);}to{opacity:1;transform:translateX(0);}}
+.alert-card.safe{border-color:rgba(0,255,136,0.2);background:rgba(0,255,136,0.04);}
+.alert-card.warn{border-color:rgba(255,123,0,0.35);background:rgba(255,123,0,0.07);}
+.alert-card.danger{border-color:rgba(255,34,85,0.4);background:rgba(255,34,85,0.08);}
+.alert-card.medium{border-color:rgba(255,200,0,0.3);background:rgba(255,200,0,0.05);}
+.ac-head{display:flex;justify-content:space-between;margin-bottom:3px;}
+.ac-risk{font-family:'Orbitron',monospace;font-size:8px;font-weight:700;}
+.ac-dist{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--muted);}
+.ac-names{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--text);margin-bottom:2px;}
+.ac-prob{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--muted);}
+
+/* BOTTOM */
+.bottom-panel{grid-column:1/-1;border-top:1px solid var(--border);background:rgba(4,15,31,0.9);display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background-color:var(--border);}
+.metric{background:var(--surface);padding:14px 18px;display:flex;flex-direction:column;justify-content:center;}
+.metric-label{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;margin-bottom:6px;}
+.metric-val{font-family:'Orbitron',monospace;font-size:22px;font-weight:700;line-height:1;}
+.metric-sub{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted);margin-top:5px;}
+.bar{height:2px;background:var(--border);border-radius:1px;margin-top:8px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:1px;transition:width 1s;}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="logo"><div class="logo-ring"></div>SDCPS · LIVE MISSION CONTROL</div>
+  <div class="hstats">
+    <div class="hstat"><span class="hstat-val" id="h-total" style="color:var(--accent)">—</span><span>OBJECTS</span></div>
+    <div class="hstat"><span class="hstat-val" id="h-sats" style="color:var(--safe)">—</span><span>SATELLITES</span></div>
+    <div class="hstat"><span class="hstat-val" id="h-deb" style="color:var(--warn)">—</span><span>DEBRIS</span></div>
+    <div class="hstat"><span class="hstat-val" id="h-conj" style="color:var(--danger)">—</span><span>CONJUNCTIONS</span></div>
+  </div>
+  <div class="clock"><span class="live-dot"></span><span id="clock">--:--:-- UTC</span></div>
+</header>
+
+<div class="left-panel">
+  <div class="ph">TRACKED OBJECTS</div>
+  <div class="scrollbox" id="obj-list">
+    <div style="padding:20px;text-align:center;color:var(--muted);font-family:Share Tech Mono,monospace;font-size:9px;">LOADING...</div>
+  </div>
+</div>
+
+<div class="center-panel">
+  <canvas id="globe"></canvas>
+  <div class="legend">
+    <div class="li"><div class="ld" style="background:var(--accent)"></div>ACTIVE SATELLITE</div>
+    <div class="li"><div class="ld" style="background:var(--warn)"></div>DEBRIS</div>
+    <div class="li"><div class="ld" style="background:var(--danger)"></div>CONJUNCTION &lt;500km</div>
+  </div>
+  <div class="refresh-badge">AUTO-REFRESH <span id="countdown">30</span>s</div>
+</div>
+
+<div class="right-panel">
+  <div class="ph">ML CONJUNCTION ASSESSMENT</div>
+  <div class="scrollbox" id="alert-list">
+    <div style="padding:20px;text-align:center;color:var(--muted);font-family:Share Tech Mono,monospace;font-size:9px;">LOADING ML DATA...</div>
+  </div>
+</div>
+
+<div class="bottom-panel">
+  <div class="metric">
+    <div class="metric-label">OBJECTS TRACKED</div>
+    <div class="metric-val" id="m-total" style="color:var(--accent)">—</div>
+    <div class="metric-sub" id="m-epoch">—</div>
+    <div class="bar"><div class="bar-fill" id="b-total" style="background:var(--accent)"></div></div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">CONJUNCTIONS NOW</div>
+    <div class="metric-val" id="m-conj" style="color:var(--warn)">—</div>
+    <div class="metric-sub">Pairs within 500km</div>
+    <div class="bar"><div class="bar-fill" id="b-conj" style="background:var(--warn)"></div></div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">ML RISK FLAGS</div>
+    <div class="metric-val" id="m-flags" style="color:var(--danger)">—</div>
+    <div class="metric-sub">XGBoost assessed</div>
+    <div class="bar"><div class="bar-fill" id="b-flags" style="background:var(--danger)"></div></div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">MODEL ACCURACY</div>
+    <div class="metric-val" style="color:var(--safe)">99%</div>
+    <div class="metric-sub">XGBoost · SGP4 · Monte Carlo</div>
+    <div class="bar"><div class="bar-fill" style="width:99%;background:var(--safe)"></div></div>
+  </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ── THREE.JS GLOBE ─────────────────────────────────────────
+const canvas = document.getElementById('globe');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setClearColor(0x000000, 0);
+renderer.setPixelRatio(window.devicePixelRatio);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200000);
+camera.position.set(0, 0, 22000);
+
+function resize() {
+  const w = canvas.parentElement.clientWidth;
+  const h = canvas.parentElement.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w/h;
+  camera.updateProjectionMatrix();
+}
+resize();
+window.addEventListener('resize', resize);
+
+scene.add(new THREE.AmbientLight(0x112244, 2));
+const sun = new THREE.DirectionalLight(0x4488ff, 3);
+sun.position.set(1, 0.5, 1);
+scene.add(sun);
+
+
+async function loadOrbits() {
+    try {
+        const res = await fetch('/api/orbits');
+        const data = await res.json();
+
+        console.log("Orbit data received:", data.length); // 👈 DEBUG
+
+        data.forEach(sat => {
+            if (sat.orbit && sat.orbit.length > 0) {
+                drawOrbit(sat.orbit);
+            }
+        });
+
+    } catch (err) {
+        console.error("Error loading orbits:", err);
+    }
+}
+
+function drawOrbit(orbitPoints) {
+    if (!orbitPoints || orbitPoints.length < 2) return;
+
+    const material = new THREE.LineBasicMaterial({
+        color: 0x00ffff,
+        opacity: 0.5,
+        transparent: true
+    });
+
+     // 👈 IMPORTANT FIX
+
+    const points = orbitPoints.map(p =>
+        new THREE.Vector3(
+            p.x,
+            p.y,
+            p.z
+        )
+    );
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+    const orbitLine = new THREE.Line(geometry, material);
+
+    scene.add(orbitLine);
+}
+
+// Earth
+// 🌍 REALISTIC EARTH
+
+// Texture loader
+const loader = new THREE.TextureLoader();
+
+// Earth texture (NASA style)
+const earthTexture = loader.load(
+  'https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg'
+);
+
+// Earth
+const earth = new THREE.Mesh(
+  new THREE.SphereGeometry(6371, 64, 64),
+  new THREE.MeshStandardMaterial({
+    map: earthTexture
+  })
+);
+
+scene.add(earth);
+
+
+// 💡 ADD LIGHTING RIGHT HERE 👇
+
+// Main sunlight
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+directionalLight.position.set(20000, 10000, 20000);
+scene.add(directionalLight);
+
+// Ambient light
+const ambientLight = new THREE.AmbientLight(0x404040);
+scene.add(ambientLight);
+
+
+// Atmosphere (your existing code continues)
+scene.add(new THREE.Mesh(
+  new THREE.SphereGeometry(6371*1.015, 32, 32),
+  new THREE.MeshPhongMaterial({color:0x0033aa, transparent:true, opacity:0.1})
+));
+// 🌌 ATMOSPHERE GLOW (OPTIONAL BUT AWESOME)
+
+const atmosphere = new THREE.Mesh(
+  new THREE.SphereGeometry(1.05, 64, 64),
+  new THREE.MeshBasicMaterial({
+    color: 0x00aaff,
+    transparent: true,
+    opacity: 0.1
+  })
+);
+
+scene.add(atmosphere);
+
+// Atmosphere
+scene.add(new THREE.Mesh(
+  new THREE.SphereGeometry(6371*1.015, 32, 32),
+  new THREE.MeshPhongMaterial({color:0x0033aa, transparent:true, opacity:0.1})
+));
+
+// Grid
+scene.add(new THREE.Mesh(
+  new THREE.SphereGeometry(6371*1.002, 24, 12),
+  new THREE.MeshBasicMaterial({color:0x0e2a4a, wireframe:true, transparent:true, opacity:0.3})
+));
+
+// Stars
+const sv = [];
+for(let i=0;i<3000;i++){
+  const t=Math.random()*Math.PI*2, p=Math.acos(2*Math.random()-1), r=80000+Math.random()*20000;
+  sv.push(r*Math.sin(p)*Math.cos(t), r*Math.cos(p), r*Math.sin(p)*Math.sin(t));
+}
+const sg = new THREE.BufferGeometry();
+sg.setAttribute('position', new THREE.Float32BufferAttribute(sv, 3));
+scene.add(new THREE.Points(sg, new THREE.PointsMaterial({color:0xffffff, size:25, transparent:true, opacity:0.6})));
+
+// Satellite dots group
+const satGroup = new THREE.Group();
+scene.add(satGroup);
+
+// Camera controls
+let camTheta=0, camPhi=Math.PI/4, camDist=22000, drag=false, lx=0, ly=0;
+canvas.addEventListener('mousedown', e=>{drag=true; lx=e.clientX; ly=e.clientY;});
+window.addEventListener('mouseup', ()=>drag=false);
+window.addEventListener('mousemove', e=>{
+  if(!drag) return;
+  camTheta -= (e.clientX-lx)*0.004;
+  camPhi = Math.max(0.2, Math.min(Math.PI-0.2, camPhi+(e.clientY-ly)*0.004));
+  lx=e.clientX; ly=e.clientY;
+});
+canvas.addEventListener('wheel', e=>{ camDist=Math.max(9000, Math.min(40000, camDist+e.deltaY*4)); });
+
+function updateCamera() {
+  camera.position.set(
+    camDist*Math.sin(camPhi)*Math.cos(camTheta),
+    camDist*Math.cos(camPhi),
+    camDist*Math.sin(camPhi)*Math.sin(camTheta)
+  );
+  camera.lookAt(0,0,0);
+}
+
+// ── DATA & UI ──────────────────────────────────────────────
+let liveObjects = [];
+let conjunctionSet = new Set();
+
+async function fetchStats() {
+  const r = await fetch('/api/stats');
+  const d = await r.json();
+  document.getElementById('h-total').textContent = d.total_objects;
+  document.getElementById('h-sats').textContent  = d.satellites;
+  document.getElementById('h-deb').textContent   = d.debris;
+  document.getElementById('m-total').textContent = d.total_objects;
+  document.getElementById('m-epoch').textContent = d.last_updated;
+  document.getElementById('b-total').style.width = Math.min(100, d.total_objects/6)+'%';
+}
+
+async function fetchPositions() {
+  const r = await fetch('/api/positions');
+  const d = await r.json();
+  liveObjects = d.objects;
+
+  // Update 3D globe
+  satGroup.clear();
+  d.objects.forEach(obj => {
+    const isConj = conjunctionSet.has(obj.name);
+    const color  = isConj ? 0xff2255 : obj.is_debris ? 0xff7b00 : 0x00d4ff;
+    const size   = isConj ? 80 : obj.is_debris ? 45 : 60;
+    const mesh   = new THREE.Mesh(
+      new THREE.SphereGeometry(size, 6, 6),
+      new THREE.MeshBasicMaterial({color})
+    );
+    mesh.position.set(obj.x, obj.y, obj.z);
+    satGroup.add(mesh);
+  });
+
+  // Update object list
+  const list = document.getElementById('obj-list');
+  list.innerHTML = d.objects.map(o => `
+    <div class="obj-item ${o.is_debris?'deb':''}">
+      <div class="obj-name">${o.name.substring(0,24)}</div>
+      <div class="obj-meta">
+        <span class="obj-alt">${o.altitude.toFixed(0)} km</span>
+        <span>${o.speed.toFixed(2)} km/s</span>
+      </div>
+    </div>`).join('');
+}
+
+async function fetchConjunctions() {
+  const r = await fetch('/api/conjunctions');
+  const d = await r.json();
+  document.getElementById('h-conj').textContent = d.total;
+  document.getElementById('m-conj').textContent = d.total;
+  document.getElementById('b-conj').style.width = Math.min(100, d.total*5)+'%';
+
+  conjunctionSet = new Set();
+  d.conjunctions.forEach(c => {
+    conjunctionSet.add(c.object1);
+    conjunctionSet.add(c.object2);
+  });
+}
+
+async function fetchML() {
+  const r = await fetch('/api/ml');
+  const d = await r.json();
+
+  const flags = d.results.filter(x => x.risk_level !== 'SAFE').length;
+  document.getElementById('m-flags').textContent = flags;
+  document.getElementById('b-flags').style.width = Math.min(100, flags*10)+'%';
+
+  const colors = {CRITICAL:'danger', HIGH:'danger', MEDIUM:'warn', LOW:'warn', SAFE:'safe'};
+  const riskColors = {CRITICAL:'var(--danger)', HIGH:'var(--warn)', MEDIUM:'#ffcc00', LOW:'var(--accent)', SAFE:'var(--safe)'};
+
+  const list = document.getElementById('alert-list');
+  if(d.results.length === 0) {
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-family:Share Tech Mono,monospace;font-size:9px;">NO CONJUNCTIONS<br>MONITORING...</div>';
+    return;
+  }
+
+  list.innerHTML = d.results.map(r => `
+    <div class="alert-card ${colors[r.risk_level]||'safe'}">
+      <div class="ac-head">
+        <span class="ac-risk" style="color:${riskColors[r.risk_level]}">${r.risk_level}</span>
+        <span class="ac-dist">${r.miss_dist.toFixed(1)} km</span>
+      </div>
+      <div class="ac-names">${r.object1.substring(0,22)} × ${r.object2.substring(0,22)}</div>
+      <div class="ac-prob">ML: ${r.collide_prob.toFixed(4)}% · Pc: ${r.pc_monte_carlo.toFixed(6)} · ${r.alt1}/${r.alt2} km</div>
+    </div>`).join('');
+}
+
+async function refreshAll() {
+  await fetchStats();
+  await fetchPositions();
+  await fetchConjunctions();
+  await fetchML();
+}
+
+// ── COUNTDOWN & AUTO-REFRESH ───────────────────────────────
+let countdown = 30;
+setInterval(() => {
+  countdown--;
+  document.getElementById('countdown').textContent = countdown;
+  if(countdown <= 0) {
+    countdown = 30;
+    refreshAll();
+  }
+}, 1000);
+
+// Clock
+setInterval(() => {
+  document.getElementById('clock').textContent =
+    new Date().toISOString().substr(11,8) + ' UTC';
+}, 1000);
+
+// Render loop
+function animate() {
+  requestAnimationFrame(animate);
+  earth.rotation.y += 0.0001;
+  updateCamera();
+  renderer.render(scene, camera);
+}
+animate();
+
+// Initial load
+window.addEventListener('load', () => {
+  try {
+    refreshAll();
+    loadOrbits();
+  } catch (e) {
+    console.error("INIT ERROR:", e);
+  }
+});
+
+</script>
+</body>
+</html>

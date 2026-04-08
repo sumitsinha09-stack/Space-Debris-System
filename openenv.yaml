@@ -1,0 +1,20 @@
+name: space-debris-env
+description: AI environment for monitoring and avoiding satellite collisions
+
+entry_point: env.SpaceEnv
+
+observation_space:
+  type: dict
+  properties:
+    satellites:
+      type: integer
+    debris:
+      type: integer
+    conjunctions:
+      type: integer
+
+action_space:
+  type: string
+  enum: ["monitor", "avoid_collision"]
+
+reward_range: [0, 1]
