@@ -35,23 +35,23 @@ CORS(app)
 
 # ── Load models once at startup ───────────────────────────
 print("Loading ML models...")
-# Loading ML models with fallback...
 import os
 
 try:
     with open("model_binary.pkl", "rb") as f:
         model_binary = pickle.load(f)
-    print("ML model loaded from file")
+    print("model_binary loaded")
 except FileNotFoundError:
     model_binary = None
-    print("No pkl file found — using fallback ML logic")
+    print("model_binary.pkl not found - using fallback")
+
 try:
     with open("model_risk.pkl", "rb") as f:
         model_risk = pickle.load(f)
     print("model_risk loaded")
 except FileNotFoundError:
     model_risk = None
-    print("model_risk.pkl not found — using fallback")
+    print("model_risk.pkl not found - using fallback")
 
 try:
     with open("label_encoder.pkl", "rb") as f:
@@ -59,9 +59,9 @@ try:
     print("label_encoder loaded")
 except FileNotFoundError:
     le = None
-    print("label_encoder.pkl not found — using fallback")
+    print("label_encoder.pkl not found - using fallback")
 
-print("✅ Models ready\n")
+print("Models ready")
 
 FEATURES = [
     "miss_distance_km", "miss_x_km", "miss_y_km", "miss_z_km",
